@@ -11,3 +11,29 @@ class BibliotecaDAO:
         pass
 
     # TODO
+    def get_biblioteche(self) -> list[Biblioteca] | None:
+        cnx = ConnessioneDB.get_connection()
+        result = []
+        if cnx in None:
+            print("❌ Errore di connessione al database")
+            return None
+
+        cursor = cnx.cursor(dictionary=True)
+        query = """ SELECT * FROM biblioteca """
+
+        try:
+            cursor.execute(query)
+            for row in cursor:
+                biblioteca = Biblioteca(
+                    id=row['id'],
+                    nome=row['nome'],
+                    indirizzo=row['indirizzo']
+                )
+                result.append(biblioteca)
+        except Exception as e:
+            print(f"Errore durante la query get_biblioteche: {e}")
+            result = None
+        finally:
+            cursor.close()
+            cnx.close()
+        return result

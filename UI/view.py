@@ -37,9 +37,25 @@ class View:
 
         # --- Sezione 2: Filtraggio ---
         # TODO
+        self.dropdown_biblioteca = ft.Dropdown(
+            label="Biblioteca",
+            width=400,
+            options=[ft.dropdown.Option(key='None', text='Nessun filtro')],
+            on_select=self.controller.on_biblioteca_change
+        )
+        self.controller.popola_dropdown_biblioteche()
+        self.dropdown_genere = ft.Dropdown(
+            label="Genere",
+            width=200,
+            options=[ft.dropdown.Option(key='None', text='Nessun filtro')],
+            on_select=self.controller.on_genere_change
+        )
+        self.controller.popola_dropdown_genere()
 
         # Sezione 3: Libri
         # TODO
+        pulsante_mostra_libri = ft.ElevatedButton('Mostra libri', on_click=self.controller.mostra_libri)
+        self.lista_libri = ft.ListView(expand=True, spacing=5, padding=10, auto_scroll=True)
 
         # --- Toggle Tema ---
         self.toggle_cambia_tema = ft.Switch(label="Tema scuro", value=True, on_change=self.cambia_tema)
@@ -54,9 +70,26 @@ class View:
 
             # Sezione 2: Filtraggio
             # TODO
+            ft.Row(
+                spacing=20,
+                controls=[self.dropdown_biblioteca, self.dropdown_genere],
+                alignment=ft.MainAxisAlign.CENTER
+            ),
+            ft.Driver(),
 
             # Sezione 3: Libri
             # TODO
+            ft.Row(
+                spacing=200,
+                controls=[pulsante_mostra_libri],
+                alignment=ft.MainAxisAlign.CENTER
+            ),
+            ft.Container(
+                content=self.lista_libri,
+                height=250,
+                border=ft.border.all(1, ft.colors.BLACK),
+                padding=5,
+            ),
         )
 
         self.page.scroll = "adaptive"
